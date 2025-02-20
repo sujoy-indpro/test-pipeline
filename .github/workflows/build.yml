@@ -1,0 +1,33 @@
+name: Manual Angular Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      notes:
+        description: 'Build notes (optional)'
+        required: false
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.x'  # or whichever version you're using
+
+    - name: Print build information
+      run: |
+        echo "Starting build process"
+        echo "Build notes: ${{ github.event.inputs.notes }}"
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build Angular app
+      run: npm run build
