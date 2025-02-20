@@ -8,8 +8,8 @@ on:
         required: true
         type: choice
         options:
-          - TEST
-          - PROD
+          - test
+          - prod
 
 jobs:
   build:
