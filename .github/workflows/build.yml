@@ -52,7 +52,7 @@ jobs:
         '
         
         # Copy the built files to EC2
-        scp -o StrictHostKeyChecking=no -i deploy_key.pem -r dist/* $EC2_USER@$EC2_HOST:/var/www/html/
+        scp -o StrictHostKeyChecking=no -i deploy_key.pem -r dist/test-pipeline/browser/* $EC2_USER@$EC2_HOST:/var/www/html/
         
         # Set proper permissions
         ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST '
