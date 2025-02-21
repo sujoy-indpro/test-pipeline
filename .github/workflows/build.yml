@@ -47,16 +47,16 @@ jobs:
         chmod 600 deploy_key.pem
 
         # Create a temporary directory on EC2
-        ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST 'mkdir -p /home/$EC2_USER/temp-dist'
+        ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST 'mkdir -p temp-dist'
 
         # Copy the built files to the temporary directory
-        scp -o StrictHostKeyChecking=no -i deploy_key.pem -r dist/test-pipeline/browser/* $EC2_USER@$EC2_HOST:/home/$EC2_USER/temp-dist/
+        scp -o StrictHostKeyChecking=no -i deploy_key.pem -r dist/test-pipeline/browser/* $EC2_USER@$EC2_HOST:/temp-dist/
 
         # Move files to /var/www/html/ with sudo and set proper permissions
         ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST '
-          sudo mv /home/$EC2_USER/temp-dist/* /var/www/html/
+          sudo mv /temp-dist/* /var/www/html/
           sudo chown -R www-data:www-data /var/www/html/
-          sudo rm -rf /home/$EC2_USER/temp-dist/
+          sudo rm -rf /temp-dist
         '
 
         # Restart Nginx to apply changes (if required)
