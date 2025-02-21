@@ -9,5 +9,4 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'test-pipeline';
-  apiKey = process.env["API_KEY"]
 }
