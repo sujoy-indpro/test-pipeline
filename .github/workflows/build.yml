@@ -54,20 +54,20 @@ jobs:
         cd ..
 
         # Create a temporary directory on EC2
-        ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST 'mkdir -p /home/$EC2_USER/temp-dist'
+        ssh -o StrictHostKeyChecking=no -i deploy_key.pem ubuntu@$EC2_HOST 'mkdir -p /home/ubuntu/temp-dist'
 
         # Copy the built files to the temporary directory
-        scp -o StrictHostKeyChecking=no -i deploy_key.pem -r dist/test-pipeline/browser/* $EC2_USER@$EC2_HOST:/home/$EC2_USER/temp-dist/
+        scp -o StrictHostKeyChecking=no -i deploy_key.pem -r dist/test-pipeline/browser/* ubuntu@$EC2_HOST:/home/ubuntu/temp-dist/
 
         # Move files to /var/www/html/ with sudo and set proper permissions
-        ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST '
-          sudo mv /home/$EC2_USER/temp-dist/* /var/www/html/
+        ssh -o StrictHostKeyChecking=no -i deploy_key.pem ubuntu@$EC2_HOST '
+          sudo mv /home/ubuntu/temp-dist/* /var/www/html/
           sudo chown -R www-data:www-data /var/www/html/
-          sudo rm -rf /home/$EC2_USER/temp-dist/
+          sudo rm -rf /home/ubuntu/temp-dist/
         '
 
         # Restart Nginx to apply changes (if required)
-        ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST 'sudo systemctl restart nginx'
+        ssh -o StrictHostKeyChecking=no -i deploy_key.pem ubuntu@$EC2_HOST 'sudo systemctl restart nginx'
 
         # Clean up the SSH key
         rm deploy_key.pem
@@ -83,10 +83,10 @@ jobs:
     #     chmod 600 deploy_key.pem
         
     #     # Copy the built files to EC2
-    #     scp -o StrictHostKeyChecking=no -i deploy_key.pem -r dist/test-pipeline/browser/* $EC2_USER@$EC2_HOST:/var/www/html/
+    #     scp -o StrictHostKeyChecking=no -i deploy_key.pem -r dist/test-pipeline/browser/* ubuntu@$EC2_HOST:/var/www/html/
         
     #     # Set proper permissions
-    #     ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST '
+    #     ssh -o StrictHostKeyChecking=no -i deploy_key.pem ubuntu@$EC2_HOST '
     #       sudo chown -R www-data:www-data /var/www/html/
     #     '
         
