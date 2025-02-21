@@ -45,13 +45,15 @@ jobs:
         # Write the SSH key to a file
         echo "$EC2_SSH_KEY" > deploy_key.pem
         chmod 600 deploy_key.pem
-        
-        # Create deployment directory if it doesn't exist
-        ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST '
-          mkdir -p /var/www/html
-        '
+
+        ls -a
+        cd dist
+        ls -a
+        tree
+        cd ..
         
         # Copy the built files to EC2
+        
         scp -o StrictHostKeyChecking=no -i deploy_key.pem -r dist/test-pipeline/browser/* $EC2_USER@$EC2_HOST:/var/www/html/
         
         # Set proper permissions
