@@ -47,7 +47,7 @@ jobs:
         chmod 600 deploy_key.pem
 
         # Create a temporary directory on EC2
-        ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST 'mkdir -p temp-dist'
+        ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST 'sudo mkdir -p temp-dist'
 
         # Copy the built files to the temporary directory
         scp -o StrictHostKeyChecking=no -i deploy_key.pem -r dist/test-pipeline/browser/* $EC2_USER@$EC2_HOST:/temp-dist/
