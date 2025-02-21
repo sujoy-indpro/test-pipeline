@@ -45,26 +45,18 @@ jobs:
         # Write the SSH key to a file
         echo "$EC2_SSH_KEY" > deploy_key.pem
         chmod 600 deploy_key.pem
-
-        # Create a temporary directory on EC2
-        ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST 'sudo mkdir -p temp-dist'
-
-        # Copy the built files to the temporary directory
-        scp -o StrictHostKeyChecking=no -i deploy_key.pem -r dist/test-pipeline/browser/* $EC2_USER@$EC2_HOST:/temp-dist/
-
-        # Move files to /var/www/html/ with sudo and set proper permissions
+        
+        # Copy the built files to EC2
+        scp -o StrictHostKeyChecking=no -i deploy_key.pem -r dist/test-pipeline/browser/* $EC2_USER@$EC2_HOST:/var/www/html/
+        
+        # Set proper permissions
         ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST '
-          sudo mv /temp-dist/* /var/www/html/
           sudo chown -R www-data:www-data /var/www/html/
-          sudo rm -rf /temp-dist
         '
-
-        # Restart Nginx to apply changes (if required)
-        # ssh -o StrictHostKeyChecking=no -i deploy_key.pem $EC2_USER@$EC2_HOST 'sudo systemctl restart nginx'
-
-        # Clean up the SSH key
+        
+        # Clean up the key file
         rm deploy_key.pem
-    
+
     - name: Verify Deployment
       env:
         EC2_HOST: ${{ secrets[format('{0}_EC2_HOST', github.event.inputs.environment)] }}
