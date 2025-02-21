@@ -51,6 +51,7 @@
                   "maximumError": "8kB"
                 }
               ],
+              "optimization": true,
               "outputHashing": "all"
             },
             "test": {
@@ -59,7 +60,9 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.test.ts"
                 }
-              ]
+              ],
+              "optimization": true,
+              "outputHashing": "all"
             },
             "development": {
               "optimization": false,
